@@ -1,3 +1,5 @@
+Antonio Massia - Pedro
+
 A função retorna uma lista com as cinco palavras definidas na linha 2.
 
 Função escolher_palavra():
