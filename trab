@@ -1,0 +1,79 @@
+import random
+import sys
+
+# Lista de palavras
+def palavras():
+    return ["viola", "tempo", "tenis", "amigo", "cacau"]
+
+# Lista de palavras já utilizadas
+registro = []
+
+# Dicionário de palavras já digitadas
+palavras_digitadas = {}
+
+# Função para escolher uma palavra aleatória
+def escolher_palavra():
+    global palavras
+    palavra = random.choice(palavras())
+    palavras().remove(palavra)
+    return palavra
+
+# Função para validar uma palavra
+def validar_palavra(palavra):
+    return palavra.isalpha()
+
+# Função para exibir o tabuleiro
+def exibir_tabuleiro(palavra, palpite):
+    if len(palavra) != len(palpite):
+        raise ValueError("As palavras devem ter o mesmo tamanho.")
+    for i in range(len(palavra)):
+        if palavra[i] == palpite[i]:
+            print("🟩", end="")
+        elif palavra[i] in palpite:
+            print("🟨", end="")
+        else:
+            print("⬛", end="")
+    print()
+
+
+# Função para processar um palpite
+def processar_palpite(palpite):
+    global palavras_digitadas
+    if palpite in palavras_digitadas:
+        print("Você já digitou essa palavra.")
+        return
+    palavras_digitadas[palpite] = True
+    if not validar_palavra(palpite):
+        print("A palavra deve ser composta apenas de letras.")
+        return
+    return palpite
+
+# Função principal
+def main():
+    # Escolhe uma palavra aleatória
+    palavra_secreta = escolher_palavra()
+
+    # Inicia o jogo
+    tentativas = 5
+    while tentativas > 0:
+        # Pede um palpite ao jogador
+        palpite = input("Digite uma palavra (5 letras): ").lower()
+
+        # Processa o palpite
+        palpite = processar_palpite(palpite)
+
+        # Verifica se o palpite é correto
+        if palpite == palavra_secreta:
+            print("Parabéns! Você acertou a palavra.")
+            break
+        else:
+            # Exibe o tabuleiro
+            exibir_tabuleiro(palavra_secreta, palpite)
+            tentativas -= 1
+
+    # Verifica se o jogador perdeu
+    if tentativas == 0:
+        print("Você perdeu! A palavra secreta era:", palavra_secreta)
+
+if __name__ == "__main__":
+    main()
